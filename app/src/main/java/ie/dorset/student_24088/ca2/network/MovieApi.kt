@@ -26,7 +26,7 @@ class MovieApi : AppCompatActivity() {
         statusErrorImage: ImageView
     ) {
         val client = OkHttpClient()
-        val request = Request.Builder().url(baseUrl+endPoint).build()
+        val request = Request.Builder().url(baseUrl + endPoint).build()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 Log.e(TAG, "Exception: $e")

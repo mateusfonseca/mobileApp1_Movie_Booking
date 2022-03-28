@@ -45,7 +45,7 @@ In addition to having followed all the guidelines and fulfilled all the requirem
 
 - **1. View biding**
 - **2. MovieApi class**  
-  This class implements an API that established communication with an external datesource, fetches its content and assigns it to the datamodel defined in the Movie class.
+  This class implements an API that establishes communication with an external datesource, fetches its content and assigns it to the datamodel defined in the Movie class.
 - **3. Parcelable interface**  
   In order to pass objects as arguments from one activity to another using intents, custom data types need to implement the [Parcelable](https://developer.android.com/reference/android/os/Parcelable) interface. Objects can then be completely rebuilt somewhere else in the code. It is worth noticing that no references to the original instance are kept. If data manipulation is performed, persistence can be accomplished by sharing intent extras between activities.
 

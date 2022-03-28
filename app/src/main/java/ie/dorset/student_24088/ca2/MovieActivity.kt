@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
@@ -28,100 +27,86 @@ class MovieActivity : AppCompatActivity() {
         val view = bindingMovie.root
         setContentView(view)
 
-        val bundle = intent.extras?.getBundle("MovieBundle")!!
+        val bundle = intent.extras?.getBundle("Bundle")!!
         position = bundle.getInt("Position")
         movie = bundle.getParcelable("Movie")!!
-        Log.d(TAG, position.toString())
-        Log.d(TAG, movie.toString())
 
-        val buttonRemoveEnabled = findViewById<ImageView>(R.id.button_minus_enabled)
-        val buttonRemoveDisabled = findViewById<ImageView>(R.id.button_minus_disabled)
-        val seatNumber = findViewById<TextView>(R.id.seat_number)
-        val buttonAddEnabled = findViewById<ImageView>(R.id.button_plus_enabled)
-        val buttonAddDisabled = findViewById<ImageView>(R.id.button_plus_disabled)
-        val seatsRemaining = findViewById<TextView>(R.id.seat_availability_number)
-
-//        findViewById<ImageView>(R.id.image).sour = movies[position!!].image_hero
-        findViewById<TextView>(R.id.title).text = movie.title
-        findViewById<TextView>(R.id.starring).text = movie.info_cast
-        findViewById<TextView>(R.id.running_time).text = movie.info_runningtime
-        findViewById<TextView>(R.id.running_time).text = movie.synopsis_short
-        buttonRemoveEnabled.setImageResource(R.drawable.ic_baseline_remove)
-        buttonRemoveDisabled.setImageResource(R.drawable.ic_baseline_remove)
-        seatNumber.text = movie.seatsSelected.toString()
-        buttonAddEnabled.setImageResource(R.drawable.ic_baseline_add)
-        buttonAddDisabled.setImageResource(R.drawable.ic_baseline_add)
-        findViewById<ImageView>(R.id.seat_icon).setImageResource(R.drawable.ic_baseline_chair)
-        seatsRemaining.text = movie.seatsRemaining.toString()
+        bindingMovie.title.text = movie.title
+        bindingMovie.starring.text = movie.info_cast
+        bindingMovie.runningTime.text = movie.info_runningtime
+        bindingMovie.description.text = movie.synopsis_short
+        bindingMovie.buttonMinusEnabled.setImageResource(R.drawable.ic_baseline_remove)
+        bindingMovie.buttonMinusDisabled.setImageResource(R.drawable.ic_baseline_remove)
+        bindingMovie.seatNumber.text = movie.seatsSelected.toString()
+        bindingMovie.buttonPlusEnabled.setImageResource(R.drawable.ic_baseline_add)
+        bindingMovie.buttonPlusDisabled.setImageResource(R.drawable.ic_baseline_add)
+        bindingMovie.seatIcon.setImageResource(R.drawable.ic_baseline_chair)
+        bindingMovie.seatAvailabilityNumber.text = movie.seatsRemaining.toString()
 
         Picasso.get()
-            .load("https://www.myvue.com" + movie.image_hero)
-            .placeholder(R.drawable.ic_launcher_foreground)
-            .error(R.drawable.ic_launcher_foreground)
+            .load(movie.baseUrl + movie.image_hero)
+            .placeholder(R.drawable.loading_animation)
+            .error(R.drawable.ic_connection_error)
             .memoryPolicy(MemoryPolicy.NO_CACHE)
             .into(findViewById<ImageView>(R.id.image))
 
         Picasso.get()
-            .load("https://www.myvue.com" + movie.cert_image)
-            .placeholder(R.drawable.ic_launcher_foreground)
-            .error(R.drawable.ic_launcher_foreground)
+            .load(movie.baseUrl + movie.cert_image)
+            .placeholder(R.drawable.loading_animation)
+            .error(R.drawable.ic_connection_error)
             .memoryPolicy(MemoryPolicy.NO_CACHE)
             .into(findViewById<ImageView>(R.id.cert_icon))
 
         if (movie.seatsSelected == 0) {
-            buttonRemoveEnabled.visibility = GONE
-            buttonRemoveDisabled.visibility = VISIBLE
+            bindingMovie.buttonMinusEnabled.visibility = GONE
+            bindingMovie.buttonMinusDisabled.visibility = VISIBLE
         } else {
-            buttonRemoveEnabled.visibility = VISIBLE
-            buttonRemoveDisabled.visibility = GONE
+            bindingMovie.buttonMinusEnabled.visibility = VISIBLE
+            bindingMovie.buttonMinusDisabled.visibility = GONE
         }
 
         if (movie.seatsRemaining == 0) {
-            buttonAddEnabled.visibility = GONE
-            buttonAddDisabled.visibility = VISIBLE
+            bindingMovie.buttonPlusEnabled.visibility = GONE
+            bindingMovie.buttonPlusDisabled.visibility = VISIBLE
         } else {
-            buttonAddEnabled.visibility = VISIBLE
-            buttonAddDisabled.visibility = GONE
+            bindingMovie.buttonPlusEnabled.visibility = VISIBLE
+            bindingMovie.buttonPlusDisabled.visibility = GONE
         }
 
-        buttonRemoveEnabled.setOnClickListener {
+        bindingMovie.buttonMinusEnabled.setOnClickListener {
             if (movie.seatsSelected != 0) {
                 movie.seatsSelected--
-                seatNumber.text = movie.seatsSelected.toString()
+                bindingMovie.seatNumber.text = movie.seatsSelected.toString()
                 movie.seatsRemaining++
-                seatsRemaining.text = movie.seatsRemaining.toString()
-                buttonAddEnabled.visibility = VISIBLE
-                buttonAddDisabled.visibility = GONE
+                bindingMovie.seatAvailabilityNumber.text = movie.seatsRemaining.toString()
+                bindingMovie.buttonPlusEnabled.visibility = VISIBLE
+                bindingMovie.buttonPlusDisabled.visibility = GONE
                 if (movie.seatsSelected == 0) {
-                    buttonRemoveEnabled.visibility = GONE
-                    buttonRemoveDisabled.visibility = VISIBLE
+                    bindingMovie.buttonMinusEnabled.visibility = GONE
+                    bindingMovie.buttonMinusDisabled.visibility = VISIBLE
                 }
             } else {
-                buttonRemoveEnabled.visibility = GONE
-                buttonRemoveDisabled.visibility = VISIBLE
+                bindingMovie.buttonMinusEnabled.visibility = GONE
+                bindingMovie.buttonMinusDisabled.visibility = VISIBLE
             }
-//            buttonRemove.isClickable = movie.seatsSelected != 0
-//            buttonAdd.isClickable = movie.seatsRemaining != 0
         }
 
-        buttonAddEnabled.setOnClickListener {
+        bindingMovie.buttonPlusEnabled.setOnClickListener {
             if (movie.seatsRemaining != 0) {
                 movie.seatsSelected++
-                seatNumber.text = movie.seatsSelected.toString()
+                bindingMovie.seatNumber.text = movie.seatsSelected.toString()
                 movie.seatsRemaining--
-                seatsRemaining.text = movie.seatsRemaining.toString()
-                buttonRemoveEnabled.visibility = VISIBLE
-                buttonRemoveDisabled.visibility = GONE
+                bindingMovie.seatAvailabilityNumber.text = movie.seatsRemaining.toString()
+                bindingMovie.buttonMinusEnabled.visibility = VISIBLE
+                bindingMovie.buttonMinusDisabled.visibility = GONE
                 if (movie.seatsRemaining == 0) {
-                    buttonAddEnabled.visibility = GONE
-                    buttonAddDisabled.visibility = VISIBLE
+                    bindingMovie.buttonPlusEnabled.visibility = GONE
+                    bindingMovie.buttonPlusDisabled.visibility = VISIBLE
                 }
             } else {
-                buttonAddEnabled.visibility = GONE
-                buttonAddDisabled.visibility = VISIBLE
+                bindingMovie.buttonPlusEnabled.visibility = GONE
+                bindingMovie.buttonPlusDisabled.visibility = VISIBLE
             }
-//            buttonRemove.isClickable = movie.seatsSelected != 0
-//            buttonAdd.isClickable = movie.seatsRemaining != 0
         }
 
         bindingMovie.dataCredits.dataCreditsLink.text = movie.baseUrl.substring(
@@ -139,14 +124,11 @@ class MovieActivity : AppCompatActivity() {
         val bundle = Bundle()
         bundle.putParcelable("Movie", movie)
         bundle.putInt("Position", position)
-        Log.d(TAG, bundle.getInt("Position", -5).toString())
-        val dataChanged = Intent()
-        dataChanged.putExtra("Bundle", bundle)
-        Log.d(TAG, "$RESULT_OK")
-        Log.d(TAG, position.toString())
-        Log.d(TAG, movie.toString())
-        Log.d(TAG, dataChanged.getBundleExtra("Bundle")?.getInt("Position").toString())
+
+        val dataChanged = Intent().putExtra("Bundle", bundle)
+
         setResult(RESULT_OK, dataChanged)
+
         super.onBackPressed()
     }
 
@@ -187,7 +169,7 @@ class MovieActivity : AppCompatActivity() {
     }
 
     // TAG used to identify the activity.
-    // Debugging purposes and on ActivitySetter call
+    // Debugging purposes
     companion object {
         private const val TAG = "MovieActivity"
     }

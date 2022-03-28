@@ -48,6 +48,8 @@ class MainActivity : AppCompatActivity() {
             bindingMain.statusErrorImage
         )
 
+        bindingMain.dataCredits
+
         bindingMain.dataCredits.dataCreditsLink.text = baseUrl.substring(
             baseUrl.indexOf("www."),
             baseUrl.indexOf(".com") + 4
@@ -96,7 +98,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // TAG used to identify the activity.
-    // Debugging purposes and on ActivitySetter call
+    // Debugging purposes
     companion object {
         private const val TAG = "MainActivity"
     }

@@ -51,11 +51,33 @@ In addition to having followed all the guidelines and fulfilled all the requirem
 
 ## Part 3: Report
 
+Being my second android application, this project was even more straightforward than the previous. Most requirements were fundamentally met with ease. However, I should probably start by saying that, once again, visuals and design were not my main concern and, admittedly, the app is, most certainly, aesthetically flawed.
 
+In this project, I had the opportunity to learn how to connect an android app to an external datasource over the internet, fetch data in the form of JSON objects and use these data to instantiate local objects and populate the application’s views.
+
+Connecting the API to the activities and the adapter was challenging as it required android concepts that were totally new to me:
+
+- **Parcelable:** android/kotlin provide this interface which allows for passing objects between activities as part of intent extras. However, rather than passing the object itself as an argument (or its pertinent memory reference for the matter), the call instantiates another object that is identical to the original, in terms of its members, but not exactly the same instance. Therefore, any data changes are, by default, not persistent.
+
+- **ActivityResultContracts:** to address the issue previously mentioned, this feature allows for an activity to be invoked with an intent while requesting another intent in return as a result, once the called activity finishes. By doing so, as long as the intents are adequately set, activities can send parcelable objects back and forth and handle any data updates once the result is received.
+
+- **runOnUiThread:** asynchronous calls are useful as they allow us to run tasks in the background without locking all other resources and causing the application to become unresponsive. However, views can only be handled by the main thread in the foreground. The API runs in the background in order not to lock the app while fetching content from the datasource, but cannot build the view on its own. Calling runOnUiThread on a block of code ensures that the block will be handled by the main thread in the foreground, making it possible to call the adapter directly from the API.
+
+About what I attempted but could not complete:
+
+- **XML databinding:** through databinding it is possible to create variables directly in the layout files and bind them to their counterpart in the datamodels, something I thought was very neat when I first saw it. Unfortunately, implementation of such feature is not trivial and I could not perform it in time for this project’s submission deadline.
 
 ## Part 4: References
 
+Conceptually, every line of code in this project was written based on official documentation:
 
+- **Android Developers Docs:** https://developer.android.com/docs
+- **Kotlin Docs:** https://kotlinlang.org/docs/home.html
+- **Material Design:** https://material.io/
+
+Visits to our most beloved **StackOverflow** (https://stackoverflow.com/) certainly happened, for insight and understanding. No code was directly copied from anywhere though.
+
+A special amount of *inspiration* was drawn from **ANDROID BASICS IN KOTLIN, Unit 4: Connect to the internet** (https://developer.android.com/courses/android-basics-kotlin/unit-4).
 
 ## Part 5: Copyright Disclaimer
 
